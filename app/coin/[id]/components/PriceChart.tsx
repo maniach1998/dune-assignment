@@ -21,9 +21,11 @@ export default function PriceChart({ coinId, name }: PriceChartProps) {
 	const [priceHistory, setPriceHistory] = useState<PriceData[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
+	const [isRealTimeActive, setIsRealTimeActive] = useState<boolean>(false);
+	const [lastUpdated, setLastUpdated] = useState<string>('');
 
+	// Initial fetch of historical data
 	useEffect(() => {
-		// Function to fetch price history
 		const fetchPriceHistory = async () => {
 			setIsLoading(true);
 			setError(null);
@@ -37,6 +39,10 @@ export default function PriceChart({ coinId, name }: PriceChartProps) {
 
 				const data = await response.json();
 				setPriceHistory(data);
+
+				// Once historical data is loaded, start real-time updates
+				setIsRealTimeActive(true);
+				setLastUpdated(new Date().toLocaleTimeString());
 			} catch (err) {
 				console.error('Error fetching price history:', err);
 				setError('Failed to load price history data');
@@ -47,6 +53,58 @@ export default function PriceChart({ coinId, name }: PriceChartProps) {
 
 		fetchPriceHistory();
 	}, [coinId]);
+
+	// Real-time price updates
+	useEffect(() => {
+		if (!isRealTimeActive) return;
+
+		const fetchLatestPrice = async () => {
+			try {
+				const response = await fetch(`/api/assets/${coinId}`);
+
+				if (!response.ok) {
+					throw new Error('Failed to fetch latest price');
+				}
+
+				const data = await response.json();
+				const newPrice = data.priceUsd;
+
+				if (newPrice) {
+					const now = new Date();
+					const newPricePoint: PriceData = {
+						time: now.getTime(),
+						priceUsd: newPrice,
+						date: now.toLocaleTimeString([], {
+							hour: '2-digit',
+							minute: '2-digit',
+							second: '2-digit',
+						}),
+					};
+
+					setPriceHistory((prev) => {
+						const newHistory = [...prev, newPricePoint];
+						// Keep only the last 60 points to avoid overcrowding (60 minutes + new points)
+						if (newHistory.length > 70) {
+							return newHistory.slice(newHistory.length - 70);
+						}
+						return newHistory;
+					});
+
+					setLastUpdated(now.toLocaleTimeString());
+				}
+			} catch (err) {
+				console.error('Error fetching latest price:', err);
+				// Don't set error state here to avoid disrupting the chart display
+			}
+		};
+
+		// Set up polling interval (every 5 seconds)
+		const intervalId = setInterval(fetchLatestPrice, 5000);
+
+		return () => {
+			clearInterval(intervalId);
+		};
+	}, [coinId, isRealTimeActive]);
 
 	// Format data for chart
 	const chartData = priceHistory.map(({ time, priceUsd, date }) => ({
@@ -64,10 +122,17 @@ export default function PriceChart({ coinId, name }: PriceChartProps) {
 	return (
 		<Card className='lg:col-span-3 w-full overflow-hidden'>
 			<CardHeader className='pb-2'>
-				<CardTitle>
-					<h3 className='text-xl tracking-tight font-bold'>{name} Price Chart (Last Hour)</h3>
-				</CardTitle>
-				<p className='text-sm text-muted-foreground'>Historical price data for the last hour</p>
+				<div className='flex justify-between items-start'>
+					<div>
+						<CardTitle>
+							<h3 className='text-xl tracking-tight font-bold'>{name} Price Chart</h3>
+						</CardTitle>
+						<p className='text-sm text-muted-foreground'>Price history and real-time updates</p>
+					</div>
+					{lastUpdated && (
+						<div className='text-xs text-muted-foreground'>Last updated: {lastUpdated}</div>
+					)}
+				</div>
 			</CardHeader>
 			<CardContent className='p-0 sm:p-6'>
 				{isLoading && (

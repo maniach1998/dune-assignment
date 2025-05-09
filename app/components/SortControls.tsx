@@ -47,7 +47,7 @@ export default function SortControls() {
 			</div>
 
 			<Button
-				variant='outline'
+				variant='secondary'
 				size='sm'
 				onClick={toggleSortOrder}
 				className='flex items-center gap-1 cursor-pointer'>
