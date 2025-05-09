@@ -25,19 +25,22 @@ export default function SortControls() {
 					<Button
 						variant={sortBy === 'rank' ? 'default' : 'outline'}
 						size='sm'
-						onClick={() => handleSortByChange('rank')}>
+						onClick={() => handleSortByChange('rank')}
+						className='cursor-pointer'>
 						Rank
 					</Button>
 					<Button
 						variant={sortBy === 'price' ? 'default' : 'outline'}
 						size='sm'
-						onClick={() => handleSortByChange('price')}>
+						onClick={() => handleSortByChange('price')}
+						className='cursor-pointer'>
 						Price
 					</Button>
 					<Button
 						variant={sortBy === 'change' ? 'default' : 'outline'}
 						size='sm'
-						onClick={() => handleSortByChange('change')}>
+						onClick={() => handleSortByChange('change')}
+						className='cursor-pointer'>
 						Change %
 					</Button>
 				</div>
@@ -47,7 +50,7 @@ export default function SortControls() {
 				variant='outline'
 				size='sm'
 				onClick={toggleSortOrder}
-				className='flex items-center gap-1'>
+				className='flex items-center gap-1 cursor-pointer'>
 				{sortOrder === 'asc' ? (
 					<>
 						<ArrowUpIcon className='size-4' />

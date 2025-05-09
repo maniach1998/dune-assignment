@@ -8,7 +8,16 @@ export default function Footer() {
 					<p className='text-sm text-muted-foreground'>
 						&copy; {new Date().getFullYear()} Dune Crypto Market Tracker. All rights reserved.
 					</p>
-					<p className='text-sm text-muted-foreground'>Made with ❤️ by Manas Acharekar</p>
+					<p className='text-sm text-muted-foreground'>
+						Made with ❤️ by{' '}
+						<a
+							href='https://manas.gg'
+							rel='noopener noreferrer'
+							target='_blank'
+							className='hover:opacity-70 transition-opacity underline underline-offset-4'>
+							Manas Acharekar
+						</a>
+					</p>
 				</div>
 
 				<ThemeToggle />

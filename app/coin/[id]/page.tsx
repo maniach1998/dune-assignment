@@ -24,7 +24,7 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 		<div className='container mx-auto px-4 py-8 max-w-6xl'>
 			<Link
 				href='/'
-				className='inline-flex items-center text-sm mb-6 hover:opacity-70 transition-opacity'>
+				className='inline-flex text-muted-foreground items-center text-sm mb-6 hover:opacity-70 transition-opacity'>
 				<ChevronLeftIcon className='size-5 mr-2' /> Back to all cryptocurrencies
 			</Link>
 
