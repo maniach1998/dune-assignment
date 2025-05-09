@@ -29,7 +29,7 @@ export default async function Home() {
 	const topCrypto = await getTopCrypto();
 
 	return (
-		<div className='container mx-auto px-4 py-8 max-w-6xl'>
+		<div className='container mx-auto px-4 pt-8 max-w-6xl'>
 			<div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4'>
 				<h1 className='text-4xl font-bold tracking-tight'>Top Cryptocurrencies</h1>
 				<p className='text-sm text-muted-foreground'>

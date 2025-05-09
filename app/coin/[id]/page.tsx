@@ -21,7 +21,7 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 	const coin = await getCoin(id);
 
 	return (
-		<div className='container mx-auto px-4 py-8 max-w-4xl'>
+		<div className='container mx-auto px-4 py-8 max-w-6xl'>
 			<Link
 				href='/'
 				className='inline-flex items-center text-sm mb-6 hover:opacity-70 transition-opacity'>
@@ -94,8 +94,6 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 										{new Intl.NumberFormat('en-US', {
 											style: 'currency',
 											currency: 'USD',
-											notation: 'compact',
-											compactDisplay: 'short',
 										}).format(Number(coin.marketCapUsd))}
 									</p>
 								</div>
@@ -105,8 +103,6 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 										{new Intl.NumberFormat('en-US', {
 											style: 'currency',
 											currency: 'USD',
-											notation: 'compact',
-											compactDisplay: 'short',
 										}).format(Number(coin.volumeUsd24Hr))}
 									</p>
 								</div>
@@ -124,11 +120,7 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 								<div>
 									<p className='text-sm font-medium text-muted-foreground'>Supply</p>
 									<p className='font-mono text-lg'>
-										{new Intl.NumberFormat('en-US', {
-											notation: 'compact',
-											compactDisplay: 'short',
-										}).format(Number(coin.supply))}{' '}
-										{coin.symbol}
+										{new Intl.NumberFormat('en-US').format(Number(coin.supply))} {coin.symbol}
 									</p>
 								</div>
 								<div>
@@ -136,10 +128,9 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 									<p className='font-mono text-lg'>
 										{!coin.maxSupply
 											? 'Unlimited'
-											: `${new Intl.NumberFormat('en-US', {
-													notation: 'compact',
-													compactDisplay: 'short',
-											  }).format(Number(coin.maxSupply))} ${coin.symbol}`}
+											: `${new Intl.NumberFormat('en-US').format(Number(coin.maxSupply))} ${
+													coin.symbol
+											  }`}
 									</p>
 								</div>
 								<div>
