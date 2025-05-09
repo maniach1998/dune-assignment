@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowUpRightIcon, ChevronLeftIcon, TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
+import { notFound } from 'next/navigation';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -7,18 +8,33 @@ import { cn } from '@/lib/utils';
 import { type CryptoCurrency } from '../../page';
 import PriceChart from './components/PriceChart';
 
-const getCoin = async (id: string): Promise<CryptoCurrency> => {
+const getCoin = async (id: string): Promise<CryptoCurrency | null> => {
 	const BASE_URL = 'https://rest.coincap.io/v3';
 
-	const res = await fetch(`${BASE_URL}/assets/${id}?apiKey=${process.env.COINCAP_API_KEY}`);
-	const data = await res.json();
+	try {
+		const res = await fetch(`${BASE_URL}/assets/${id}?apiKey=${process.env.COINCAP_API_KEY}`);
 
-	return data.data;
+		if (!res.ok) {
+			// If API returns an error (like 404 for non-existent coin)
+			return null;
+		}
+
+		const data = await res.json();
+		return data.data;
+	} catch (error) {
+		console.error(`Error fetching coin ${id}:`, error);
+		return null;
+	}
 };
 
 export default async function CoinPage({ params }: { params: Promise<{ id: string }> }) {
 	const { id } = await params;
 	const coin = await getCoin(id);
+
+	// If the coin doesn't exist, show the 404 page
+	if (!coin) {
+		notFound();
+	}
 
 	return (
 		<div className='container mx-auto px-4 py-8 max-w-6xl'>

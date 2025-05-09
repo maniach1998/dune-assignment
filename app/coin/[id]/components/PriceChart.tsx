@@ -34,10 +34,17 @@ export default function PriceChart({ coinId, name }: PriceChartProps) {
 				const response = await fetch(`/api/history/${coinId}`);
 
 				if (!response.ok) {
-					throw new Error('Failed to fetch price history');
+					throw new Error(
+						`Failed to fetch price history: ${response.status} ${response.statusText}`
+					);
 				}
 
 				const data = await response.json();
+
+				if (data.error) {
+					throw new Error(data.error);
+				}
+
 				setPriceHistory(data);
 
 				// Once historical data is loaded, start real-time updates
@@ -46,6 +53,7 @@ export default function PriceChart({ coinId, name }: PriceChartProps) {
 			} catch (err) {
 				console.error('Error fetching price history:', err);
 				setError('Failed to load price history data');
+				setIsRealTimeActive(false);
 			} finally {
 				setIsLoading(false);
 			}
@@ -67,6 +75,11 @@ export default function PriceChart({ coinId, name }: PriceChartProps) {
 				}
 
 				const data = await response.json();
+
+				if (data.error) {
+					throw new Error(data.error);
+				}
+
 				const newPrice = data.priceUsd;
 
 				if (newPrice) {
@@ -95,6 +108,8 @@ export default function PriceChart({ coinId, name }: PriceChartProps) {
 			} catch (err) {
 				console.error('Error fetching latest price:', err);
 				// Don't set error state here to avoid disrupting the chart display
+				// But we should stop polling if there are persistent errors
+				setIsRealTimeActive(false);
 			}
 		};
 

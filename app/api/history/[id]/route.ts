@@ -32,10 +32,24 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 		);
 
 		if (!res.ok) {
-			throw new Error(`API returned status ${res.status}`);
+			// Handle 404 specifically for invalid coin IDs
+			if (res.status === 404) {
+				return NextResponse.json(
+					{ error: `Cryptocurrency with ID '${coinId}' not found` },
+					{ status: 404 }
+				);
+			}
+
+			// Handle other API errors
+			throw new Error(`API returned status ${res.status} ${res.statusText}`);
 		}
 
 		const data = await res.json();
+
+		// Check if the data has the expected structure
+		if (!data.data || !Array.isArray(data.data)) {
+			throw new Error('Invalid data format received from API');
+		}
 
 		// Process the data to format dates
 		const processedData = data.data.map((item: PriceHistoryItem) => ({

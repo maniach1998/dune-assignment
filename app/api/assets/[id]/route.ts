@@ -12,10 +12,25 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 		});
 
 		if (!res.ok) {
-			throw new Error(`API returned status ${res.status}`);
+			// Handle 404 specifically for invalid coin IDs
+			if (res.status === 404) {
+				return NextResponse.json(
+					{ error: `Cryptocurrency with ID '${coinId}' not found` },
+					{ status: 404 }
+				);
+			}
+
+			// Handle other API errors
+			throw new Error(`API returned status ${res.status} ${res.statusText}`);
 		}
 
 		const data = await res.json();
+
+		// Check if the data has the expected structure
+		if (!data.data) {
+			throw new Error('Invalid data format received from API');
+		}
+
 		return NextResponse.json(data.data);
 	} catch (error) {
 		console.error(`Error fetching asset ${coinId}:`, error);
