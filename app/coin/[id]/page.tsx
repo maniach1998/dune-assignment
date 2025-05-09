@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { cn } from '@/lib/utils';
 import { type CryptoCurrency } from '../../page';
+import PriceChart from './components/PriceChart';
 
 const getCoin = async (id: string): Promise<CryptoCurrency> => {
 	const BASE_URL = 'https://rest.coincap.io/v3';
@@ -73,6 +74,9 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 						</div>
 					</div>
 				</div>
+
+				{/* Price Chart - History Data */}
+				<PriceChart coinId={id} name={coin.name} symbol={coin.symbol} />
 
 				{/* Market data */}
 				<Card className='lg:col-span-2'>
