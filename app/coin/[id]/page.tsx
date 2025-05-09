@@ -82,7 +82,7 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 				<Card className='lg:col-span-2'>
 					<CardHeader>
 						<CardTitle>
-							<h3 className='text-xl font-bold'>Market Data</h3>
+							<h3 className='text-xl font-bold tracking-tight'>Market Data</h3>
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
@@ -162,7 +162,7 @@ export default async function CoinPage({ params }: { params: Promise<{ id: strin
 				<Card>
 					<CardHeader>
 						<CardTitle>
-							<h3 className='text-xl font-bold'>Price Statistics</h3>
+							<h3 className='text-xl font-bold tracking-tight'>Price Statistics</h3>
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
