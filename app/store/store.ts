@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { type CryptoCurrency } from '../page';
 
 // Types
 export interface CryptoState {

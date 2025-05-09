@@ -24,7 +24,7 @@ interface PriceData {
 	date: string;
 }
 
-export default function PriceChart({ coinId, name, symbol }: PriceChartProps) {
+export default function PriceChart({ coinId }: PriceChartProps) {
 	const [priceHistory, setPriceHistory] = useState<PriceData[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string | null>(null);
@@ -107,7 +107,7 @@ export default function PriceChart({ coinId, name, symbol }: PriceChartProps) {
 									}
 								/>
 								<Tooltip
-									formatter={(value: any) => [
+									formatter={(value: number) => [
 										value.toLocaleString('en-US', {
 											style: 'currency',
 											currency: 'USD',

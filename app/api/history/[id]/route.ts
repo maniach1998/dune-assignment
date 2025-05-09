@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server';
 
+interface PriceHistoryItem {
+	priceUsd: string;
+	time: number;
+	circulatingSupply: string;
+	date?: string;
+}
+
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
 	const { id: coinId } = await params;
 
@@ -31,7 +38,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 		const data = await res.json();
 
 		// Process the data to format dates
-		const processedData = data.data.map((item: any) => ({
+		const processedData = data.data.map((item: PriceHistoryItem) => ({
 			...item,
 			date: new Date(item.time).toLocaleTimeString([], {
 				hour: '2-digit',
