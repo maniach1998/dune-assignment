@@ -27,7 +27,7 @@ export default function Error({
 			<div className='flex flex-col items-center justify-center py-16 text-center'>
 				<h1 className='text-4xl font-bold tracking-tight mb-4'>Something went wrong</h1>
 				<p className='text-muted-foreground mb-8 max-w-md'>
-					We encountered an error while loading this cryptocurrency's data.
+					We encountered an error while loading this cryptocurrency&apos;s data.
 				</p>
 				<div className='flex gap-4'>
 					<button

@@ -15,8 +15,8 @@ export default function CoinNotFound() {
 			<div className='flex flex-col items-center justify-center py-16 text-center'>
 				<h1 className='text-4xl font-bold tracking-tight mb-4'>Cryptocurrency Not Found</h1>
 				<p className='text-muted-foreground mb-8 max-w-md'>
-					The cryptocurrency you're looking for doesn't exist or is not available through the
-					CoinCap API.
+					The cryptocurrency you&apos;re looking for doesn&apos;t exist or is not available through
+					the CoinCap API.
 				</p>
 				<Link href='/' className={cn(buttonVariants({ variant: 'default' }))}>
 					View Available Cryptocurrencies
